@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Convertidor de Unidades  </title>
+    <h1>universidad icel profesor jaime minor gomez </h1>
+    <h2>yair honorato mendoza </h2>
+    <figure class="icel">
+        <img src="icel.jpg" height="220px"white="100%" alt="icel">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f5;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .convertidor {
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 400px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        select, input[type="number"], button {
+            width: calc(100% - 20px);
+            margin: 10px auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Convertidor de Unidades</h1>
+    <div class="convertidor">
+        <label for="tipo">Selecciona tipo de conversión:</label>
+        <select id="tipo" onchange="mostrarOpciones()">
+            <option value="">--Selecciona--</option>
+            <option value="longitud">Longitud</option>
+            <option value="masa">Masa</option>
+            <option value="velocidad">Velocidad</option>
+        </select>
+
+        <div id="opciones" style="display: none;">
+            <label for="valor">Ingresa el valor:</label>
+            <input type="number" id="valor" placeholder="Introduce un valor">
+
+            <label for="unidadEntrada">De:</label>
+            <select id="unidadEntrada"></select>
+
+            <label for="unidadSalida">A:</label>
+            <select id="unidadSalida"></select>
+
+            <button onclick="convertir()">Convertir</button>
+        </div>
+        <div class="resultado" id="resultado"></div>
+    </div>
+
+    <script>
+        const opciones = {
+            longitud: {
+                unidades: {
+                    metros: "Metros",
+                    centimetros: "Centímetros",
+                    pulgadas: "Pulgadas"
+                },
+                conversiones: {
+                    "metros:centimetros": valor => valor * 100,
+                    "metros:pulgadas": valor => valor * 39.3701,
+                    "centimetros:metros": valor => valor / 100,
+                    "centimetros:pulgadas": valor => valor * 0.393701,
+                    "pulgadas:metros": valor => valor / 39.3701,
+                    "pulgadas:centimetros": valor => valor * 2.54
+                }
+            },
+            masa: {
+                unidades: {
+                    kilogramos: "Kilogramos",
+                    libras: "Libras",
+                    gramos: "Gramos"
+                },
+                conversiones: {
+                    "kilogramos:libras": valor => valor * 2.20462,
+                    "kilogramos:gramos": valor => valor * 1000,
+                    "libras:kilogramos": valor => valor / 2.20462,
+                    "libras:gramos": valor => valor * 453.592,
+                    "gramos:kilogramos": valor => valor / 1000,
+                    "gramos:libras": valor => valor / 453.592
+                }
+            },
+            velocidad: {
+                unidades: {
+                    "metros/segundo": "Metros/Segundo",
+                    "kilometros/hora": "Kilómetros/Hora"
+                },
+                conversiones: {
+                    "metros/segundo:kilometros/hora": valor => valor * 3.6,
+                    "kilometros/hora:metros/segundo": valor => valor / 3.6
+                }
+            }
+        };
+
+        function mostrarOpciones() {
+            const tipo = document.getElementById("tipo").value;
+            const unidadEntrada = document.getElementById("unidadEntrada");
+            const unidadSalida = document.getElementById("unidadSalida");
+            const opcionesDiv = document.getElementById("opciones");
+
+            if (!tipo) {
+                opcionesDiv.style.display = "none";
+                return;
+            }
+
+            unidadEntrada.innerHTML = "";
+            unidadSalida.innerHTML = "";
+
+            for (const [key, label] of Object.entries(opciones[tipo].unidades)) {
+                unidadEntrada.innerHTML += `<option value="${key}">${label}</option>`;
+                unidadSalida.innerHTML += `<option value="${key}">${label}</option>`;
+            }
+
+            opcionesDiv.style.display = "block";
+        }
+
+        function convertir() {
+            const tipo = document.getElementById("tipo").value;
+            const valor = parseFloat(document.getElementById("valor").value);
+            const unidadEntrada = document.getElementById("unidadEntrada").value;
+            const unidadSalida = document.getElementById("unidadSalida").value;
+            const resultadoDiv = document.getElementById("resultado");
+
+            if (isNaN(valor) || !unidadEntrada || !unidadSalida) {
+                resultadoDiv.textContent = "Por favor, ingresa valores válidos.";
+                return;
+            }
+
+            const claveConversion = `${unidadEntrada}:${unidadSalida}`;
+            const conversion = opciones[tipo].conversiones[claveConversion];
+
+            if (conversion) {
+                const resultado = conversion(valor);
+                resultadoDiv.textContent = `Resultado: ${resultado.toFixed(2)} ${opciones[tipo].unidades[unidadSalida]}`;
+            } else {
+                resultadoDiv.textContent = "Conversión no disponible.";
+            }
+        }
+    </script>
+</body>
+</html>

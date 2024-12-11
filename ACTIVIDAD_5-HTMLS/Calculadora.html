@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Simple</title>
+    <h1>universidad icel profesor jaime minor gomez </h1>
+    <h2>yair honorato mendoza </h2>
+    <figure class="icel">
+        <img src="icel.jpg" height="220px"white="100%" alt="icel">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #c1c1ff;
+        }
+        .calculadora {
+            display: inline-block;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #817c7c;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgb(0, 0, 0);
+        }
+        input[type="text"] {
+            width: 220px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 18px;
+            text-align: right;
+            border: 2px solid #ffffff;
+            border-radius: 5px;
+        }
+        .botones {
+            display: grid;
+            grid-template-columns: repeat(4, 60px);
+            gap: 10px;
+        }
+        .boton {
+            padding: 10px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .boton:hover {
+            background-color: #0056b3;
+        }
+        .boton.limpiar {
+            background-color: #dc3545;
+        }
+        .boton.limpiar:hover {
+            background-color: #a71d2a;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculadora">
+        <input type="text" id="pantalla" disabled>
+        <div class="botones">
+            <button class="boton" onclick="agregarNumero('7')">7</button>
+            <button class="boton" onclick="agregarNumero('8')">8</button>
+            <button class="boton" onclick="agregarNumero('9')">9</button>
+            <button class="boton" onclick="agregarNumero('/')">/</button>
+            <button class="boton" onclick="agregarNumero('4')">4</button>
+            <button class="boton" onclick="agregarNumero('5')">5</button>
+            <button class="boton" onclick="agregarNumero('6')">6</button>
+            <button class="boton" onclick="agregarNumero('*')">*</button>
+            <button class="boton" onclick="agregarNumero('1')">1</button>
+            <button class="boton" onclick="agregarNumero('2')">2</button>
+            <button class="boton" onclick="agregarNumero('3')">3</button>
+            <button class="boton" onclick="agregarNumero('-')">-</button>
+            <button class="boton" onclick="agregarNumero('0')">0</button>
+            <button class="boton" onclick="agregarNumero('.')">.</button>
+            <button class="boton" onclick="calcular()">=</button>
+            <button class="boton" onclick="agregarNumero('+')">+</button>
+            <button class="boton limpiar" onclick="limpiar()">C</button>
+        </div>
+    </div>
+
+    <script>
+        const pantalla = document.getElementById('pantalla');
+
+        function agregarNumero(numero) {
+            pantalla.value += numero;
+        }
+
+        function calcular() {
+            try {
+                pantalla.value = eval(pantalla.value);
+            } catch (error) {
+                alert("Operación inválida");
+                limpiar();
+            }
+        }
+
+        function limpiar() {
+            pantalla.value = '';
+        }
+    </script>
+</body>
+</html>
